@@ -55,7 +55,7 @@ public class Server implements AutoCloseable {
             os.close();
         });
         httpServer.start();
-        System.out.println("started 'hello, world' web server on http://localhost:" + 8080);
+        System.out.println("started 'hello, world -> gradle.build.kts + ktor references' web server on http://localhost:" + 8080);
     }
 
     @Override
