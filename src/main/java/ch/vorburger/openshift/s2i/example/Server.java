@@ -48,14 +48,14 @@ public class Server implements AutoCloseable {
         int port = 8080;
         httpServer = HttpServer.create(new InetSocketAddress(port), 0);
         httpServer.createContext("/", exchange -> {
-            String response = "hello, world";
+            String response = "hello, world -> gradle.build.kts + ktor references";
             exchange.sendResponseHeaders(HTTP_OK_STATUS, response.getBytes().length);
             OutputStream os = exchange.getResponseBody();
             os.write(response.getBytes());
             os.close();
         });
         httpServer.start();
-        System.out.println("started 'hello, world -> gradle.build.kts + ktor references' web server on http://localhost:" + 8080);
+        System.out.println("started 'hello, world' web server on http://localhost:" + 8080);
     }
 
     @Override
