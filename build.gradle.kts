@@ -29,23 +29,12 @@ repositories {
 }
 
 dependencies {
-    //compile("org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version")
+    compile("org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version")
     //compile("io.ktor:ktor-server-jetty:$ktor_version")
     //compile("ch.qos.logback:logback-classic:$logback_version")
     //compile("io.ktor:ktor-server-core:$ktor_version")
     //compile("io.ktor:ktor-locations:$ktor_version")
 
     testCompile("junit:junit:4.12")
-}
-
-configurations.compile.forEach { println("${it.name}") }
-
-tasks {
-    withType<Jar> {
-        manifest {
-            attributes(mapOf("Main-Class" to application.mainClassName))
-            attributes(mapOf("Class-Path" to (configurations.compile.map { it.name }).joinToString(" ")))
-        }
-    }
 }
 
