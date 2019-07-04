@@ -40,7 +40,7 @@ tasks {
     withType<Jar> {
         manifest {
             attributes(mapOf("Main-Class" to application.mainClassName))
-
+            attributes(mapOf("Class-Path" to (configurations.compile.map { it.name }).joinToString(" ")))
         }
     }
 }
