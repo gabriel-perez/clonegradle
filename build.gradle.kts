@@ -1,6 +1,8 @@
 import org.jetbrains.kotlin.gradle.dsl.Coroutines
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
+println("Starting build.gradle.kts processing...")
+
 val logback_version: String by project
 val ktor_version: String by project
 val kotlin_version: String by project
@@ -35,6 +37,8 @@ dependencies {
 
     testCompile("junit:junit:4.12")
 }
+
+configurations.compile.forEach { println("${it.name}") }
 
 tasks {
     withType<Jar> {
