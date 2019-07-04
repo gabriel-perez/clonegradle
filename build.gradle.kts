@@ -19,10 +19,10 @@ plugins {
 application {
     mainClassName = "ch.vorburger.openshift.s2i.example.Server"
 }
-
+/*
 tasks.withType<KotlinCompile> {
     kotlinOptions.jvmTarget = "1.8"
-}
+}*/
 
 repositories {
     jcenter()
@@ -37,4 +37,15 @@ dependencies {
 
     testCompile("junit:junit:4.12")
 }
+/*
+configurations.compile.forEach { println("${it.name}") }
+
+tasks {
+    withType<Jar> {
+        manifest {
+            attributes(mapOf("Main-Class" to application.mainClassName))
+            attributes(mapOf("Class-Path" to (configurations.compile.map { it.name }).joinToString(" ")))
+        }
+    }
+}*/
 
