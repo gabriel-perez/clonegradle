@@ -2,6 +2,8 @@ apply plugin: 'java'
 apply plugin: 'application'
 
 dependencies {
+    compile 'io.kubernetes:client-java:4.0.0'
+
     testImplementation 'junit:junit:4.12'
 }
 

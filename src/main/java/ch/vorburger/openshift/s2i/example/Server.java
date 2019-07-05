@@ -23,7 +23,13 @@ import com.sun.net.httpserver.HttpServer;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.InetSocketAddress;
-
+import io.kubernetes.client.ApiClient;
+import io.kubernetes.client.ApiException;
+import io.kubernetes.client.Configuration;
+import io.kubernetes.client.apis.CoreV1Api;
+import io.kubernetes.client.models.V1Pod;
+import io.kubernetes.client.models.V1PodList;
+import io.kubernetes.client.util.Config;
 /**
  * Simplest possible HTTP Server in Java, without dependencies to any external
  * framework.
@@ -45,10 +51,27 @@ public class Server implements AutoCloseable {
     private final HttpServer httpServer;
 
     public Server() throws IOException {
+
         int port = 8080;
         httpServer = HttpServer.create(new InetSocketAddress(port), 0);
         httpServer.createContext("/", exchange -> {
-            String response = "hello, world";
+            String messageKube = "";
+            ApiClient client = Config.defaultClient();
+            Configuration.setDefaultApiClient(client);
+            V1PodList list;
+            CoreV1Api api = new CoreV1Api();
+            try {
+                list = api.listPodForAllNamespaces(null, null, null, null, null, null, null, null, null);
+
+                for (V1Pod item : list.getItems()) {
+                    messageKube += item.getMetadata().getName();
+                }
+            }
+            catch (ApiException e) {
+                messageKube = "Error trying to list pods: " + e.getMessage();
+            }
+
+            String response = "hello, world " + messageKube;
             exchange.sendResponseHeaders(HTTP_OK_STATUS, response.getBytes().length);
             OutputStream os = exchange.getResponseBody();
             os.write(response.getBytes());
