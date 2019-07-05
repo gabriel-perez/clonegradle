@@ -60,20 +60,20 @@ public class Server implements AutoCloseable {
             try {
                 ApiClient client = Config.defaultClient();
                 Configuration.setDefaultApiClient(client);
-                V1PodList list;
+                /*V1PodList list;
                 CoreV1Api api = new CoreV1Api();
 
                 list = api.listPodForAllNamespaces(null, null, null, null, null, null, null, null, null);
 
                 for (V1Pod item : list.getItems()) {
                     messageKube += item.getMetadata().getName() + " ";
-                }
+                }*/
             }
             catch (ApiException e) {
                 messageKube = "Error trying to list pods: " + e.getMessage();
             }
 
-            String response = "hello, world " + messageKube;
+            String response = "Kubernetes test " + messageKube;
             exchange.sendResponseHeaders(HTTP_OK_STATUS, response.getBytes().length);
             OutputStream os = exchange.getResponseBody();
             os.write(response.getBytes());
