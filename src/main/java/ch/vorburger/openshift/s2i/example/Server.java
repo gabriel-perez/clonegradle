@@ -30,6 +30,9 @@ import io.kubernetes.client.apis.CoreV1Api;
 import io.kubernetes.client.models.V1Pod;
 import io.kubernetes.client.models.V1PodList;
 import io.kubernetes.client.util.Config;
+import io.kubernetes.client.auth.*;
+import io.kubernetes.client.apis.CoreApi;
+
 /**
  * Simplest possible HTTP Server in Java, without dependencies to any external
  * framework.
@@ -58,19 +61,31 @@ public class Server implements AutoCloseable {
             String messageKube = "";
 
             try {
+
                 ApiClient client = Config.defaultClient();
                 Configuration.setDefaultApiClient(client);
+
+                ApiKeyAuth BearerToken = (ApiKeyAuth) client.getAuthentication("BearerToken");
+                BearerToken.setApiKey("yDv4dQiKUWjiVfqOCTcGIzfUFyz_893hSoyHRxIWyyU");
+                //BearerToken.setApiKeyPrefix("Token");
+
+                CoreApi apiInstance = new CoreApi();
+                var result = apiInstance.getAPIVersions();
+                System.out.println(result);
+
+                messageKube = result.toString();
+
                 /*V1PodList list;
                 CoreV1Api api = new CoreV1Api();
 
                 list = api.listPodForAllNamespaces(null, null, null, null, null, null, null, null, null);
 
                 for (V1Pod item : list.getItems()) {
-                    messageKube += item.getMetadata().getName() + " ";
+                    messageKube += item.getMetadata().getName() + "\r\n";
                 }*/
             }
             catch (ApiException e) {
-                messageKube = "Error trying to list pods: " + e.getMessage();
+                messageKube = "Error trying to list pods: \r\n" + e.getMessage();
             }
 
             String response = "Kubernetes test " + messageKube;
