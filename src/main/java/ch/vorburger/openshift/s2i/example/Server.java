@@ -56,15 +56,17 @@ public class Server implements AutoCloseable {
         httpServer = HttpServer.create(new InetSocketAddress(port), 0);
         httpServer.createContext("/", exchange -> {
             String messageKube = "";
-            ApiClient client = Config.defaultClient();
-            Configuration.setDefaultApiClient(client);
-            V1PodList list;
-            CoreV1Api api = new CoreV1Api();
+
             try {
+                ApiClient client = Config.defaultClient();
+                Configuration.setDefaultApiClient(client);
+                V1PodList list;
+                CoreV1Api api = new CoreV1Api();
+
                 list = api.listPodForAllNamespaces(null, null, null, null, null, null, null, null, null);
 
                 for (V1Pod item : list.getItems()) {
-                    messageKube += item.getMetadata().getName();
+                    messageKube += item.getMetadata().getName() + " ";
                 }
             }
             catch (ApiException e) {
