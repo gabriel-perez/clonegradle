@@ -1,6 +1,9 @@
-apply plugin: 'java'
-apply plugin: 'application'
 
+plugins {
+    id 'java'
+    id 'application'
+    id("com.github.johnrengelman.shadow") version "5.1.0"
+}
 
 java {
     sourceCompatibility = JavaVersion.VERSION_1_8
@@ -13,7 +16,7 @@ dependencies {
     compile "org.slf4j:slf4j-simple:1.7.25"
 
     testImplementation 'junit:junit:4.12'
-}
+    }
 
 repositories {
     jcenter()
@@ -21,11 +24,11 @@ repositories {
 
 mainClassName = 'ch.vorburger.openshift.s2i.example.Server'
 
-jar {
-  manifest {
-    attributes(
-      'Class-Path': configurations.compile.collect { it.getName() }.join(' '),
-      'Main-Class': "$mainClassName"
-    )
-  }
+tasks{
+    build {
+        dependsOn (shadowJar)
+    }
+    jar {
+        enabled = false
+    }
 }
